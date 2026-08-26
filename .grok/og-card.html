@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Leafbound</title>
+  <style>
+    @font-face {
+      font-family: "Cinzel";
+      src: url("og-fonts/Cinzel.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Cormorant Garamond";
+      src: url("og-fonts/CormorantGaramond-Italic.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: italic;
+      font-display: block;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #1c1410;
+    }
+    .desk {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 18% 12%, rgba(74, 54, 36, 0.55), transparent 46%),
+        radial-gradient(ellipse at 88% 90%, rgba(0, 0, 0, 0.45), transparent 50%),
+        repeating-linear-gradient(
+          92deg,
+          #1c1410 0px,
+          #241810 3px,
+          #1a120e 6px,
+          #2a1c14 9px,
+          #1c1410 12px
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .book {
+      width: 1148px;
+      height: 582px;
+      display: flex;
+      border-radius: 10px 14px 14px 10px;
+      overflow: hidden;
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(201, 162, 39, 0.18);
+    }
+    .spine {
+      width: 42px;
+      flex: 0 0 42px;
+      background:
+        linear-gradient(
+          90deg,
+          #24160f 0%,
+          #3a2a1c 28%,
+          #4a3626 48%,
+          #3a2a1c 62%,
+          #2b1d14 100%
+        );
+      box-shadow: inset -8px 0 12px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+    .spine::after {
+      content: "";
+      position: absolute;
+      top: 28px;
+      bottom: 28px;
+      left: 14px;
+      width: 3px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, transparent, #c9a227 12%, #c9a227 88%, transparent);
+      opacity: 0.7;
+    }
+    .page {
+      flex: 1;
+      position: relative;
+      background-color: #ecdcb8;
+      background-image:
+        radial-gradient(circle at 14% 10%, rgba(0, 0, 0, 0.045), transparent 42%),
+        radial-gradient(circle at 86% 88%, rgba(0, 0, 0, 0.055), transparent 48%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(90, 70, 40, 0.04) 0px,
+          rgba(90, 70, 40, 0.04) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+    }
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(28, 20, 16, 0.16), transparent 38px);
+    }
+    .polaroid {
+      position: absolute;
+      width: 168px;
+      background: #f7f1e4;
+      padding: 8px 8px 28px;
+      box-shadow:
+        0 8px 18px rgba(28, 20, 16, 0.38),
+        0 0 0 1px rgba(43, 33, 22, 0.12);
+      z-index: 2;
+    }
+    .polaroid img {
+      display: block;
+      width: 152px;
+      height: 168px;
+      object-fit: cover;
+      filter: sepia(0.14) contrast(1.04) saturate(0.92);
+    }
+    .tape {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      width: 54px;
+      height: 18px;
+      transform: translateX(-50%) rotate(-2deg);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.28));
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    }
+    .p1 { top: 36px; left: 52px; transform: rotate(-7.5deg); }
+    .p2 { top: 42px; right: 48px; transform: rotate(6.5deg); }
+    .p3 { bottom: 34px; left: 78px; transform: rotate(5deg); }
+    .p4 { bottom: 38px; right: 62px; transform: rotate(-4.5deg); }
+    .lockup {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .leaf {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 1px 0 rgba(43, 33, 22, 0.25));
+    }
+    .rule {
+      width: 420px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9a227 18%, #c9a227 82%, transparent);
+      opacity: 0.85;
+    }
+    h1 {
+      font-family: "Cinzel", "Liberation Serif", serif;
+      font-weight: 700;
+      font-size: 92px;
+      letter-spacing: 0.14em;
+      line-height: 1;
+      margin: 14px 0 10px;
+      padding-left: 0.14em; /* optical center with letter-spacing */
+      background: linear-gradient(180deg, #e6d07a 0%, #c9a227 42%, #8f7318 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 0 #5a4710) drop-shadow(0 0 14px rgba(201, 162, 39, 0.28));
+    }
+    .tag {
+      font-family: "Cormorant Garamond", "Liberation Serif", serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 26px;
+      color: #2b2116;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      opacity: 0.82;
+    }
+  </style>
+</head>
+<body>
+  <div class="desk">
+    <div class="book">
+      <div class="spine"></div>
+      <div class="page">
+        <figure class="polaroid p1">
+          <span class="tape"></span>
+          <img src="og-art/maple-a.jpg" alt="" />
+        </figure>
+        <figure class="polaroid p2">
+          <span class="tape"></span>
+          <img src="og-art/fern-a.jpg" alt="" />
+        </figure>
+        <figure class="polaroid p3">
+          <span class="tape"></span>
+          <img src="og-art/fern-b.jpg" alt="" />
+        </figure>
+        <figure class="polaroid p4">
+          <span class="tape"></span>
+          <img src="og-art/maple-b.jpg" alt="" />
+        </figure>
+        <div class="lockup">
+          <svg class="leaf" viewBox="0 0 42 42" aria-hidden="true">
+            <path d="M21 4c10 6 16 15 15.5 25.5C29 26 24.5 24.8 21 24.8S13 26 5.5 29.5C5 19 11 10 21 4z" fill="#c9a227"/>
+            <path d="M21 5.5v22" stroke="#3a2a1c" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="rule"></div>
+          <h1>Leafbound</h1>
+          <p class="tag">a pocket analog notebook</p>
+          <div class="rule"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
